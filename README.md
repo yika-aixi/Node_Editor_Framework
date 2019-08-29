@@ -1,3 +1,20 @@
+#说明
+
+该分支依赖[EditorFrame](https://assetstore.unity.com/packages/tools/utilities/editor-frame-146795)
+
+支持Unity的asmdef
+
+我是如何支持的,设置asmdef后, `Node Editor` 中会没任何反应,是因为他只寻找了带有`Assembly`名字的程序集里它的特性类(简单说就是那个熟悉的`Assembly-CSharp`),没有找到,所以`Canvas`里没任何反应
+
+只需要修改 `NodeEditorInputSystem`和`ReflectionUtility`类中的`assembly.FullName.Contains ("Assembly"))`将带有这块代码的部分代码改成自己的方式即可
+
+
+同时不要忘记 `UndoPro` 也需要弄 asmdef
+
+
+## End
+
+
 # Node Editor Framework for Unity
 
 #### A flexible and modular Node Editor Framework for creating node based displays and editors
