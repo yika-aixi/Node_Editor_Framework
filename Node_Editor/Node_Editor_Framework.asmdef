@@ -1,0 +1,15 @@
+{
+    "name": "Node_Editor_Framework",
+    "references": [
+        "Icarus.EditorFrame.Common",
+        "UndoPro"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
