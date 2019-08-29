@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Linq;
-
+using CabinIcarus.EditorFrame.Utils;
 using NodeEditorFramework.Utilities;
 
 #if UNITY_EDITOR
@@ -41,64 +41,59 @@ namespace NodeEditorFramework
 			contextEntries = new List<KeyValuePair<ContextEntryAttribute, MenuFunctionData>> ();
 			contextFillers = new List<KeyValuePair<ContextFillerAttribute, Delegate>> ();
 
-			// Iterate through each static method
-			IEnumerable<Assembly> scriptAssemblies = AppDomain.CurrentDomain.GetAssemblies ().Where ((Assembly assembly) => assembly.FullName.Contains ("Assembly"));
-			foreach (Assembly assembly in scriptAssemblies) 
+			foreach (Type type in AssemblyUtil.GetRuntimeType()) 
 			{
-				foreach (Type type in assembly.GetTypes ()) 
+				foreach (MethodInfo method in type.GetMethods (BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)) 
 				{
-					foreach (MethodInfo method in type.GetMethods (BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static)) 
-					{
-						#region Event-Attributes recognition and storing
+					#region Event-Attributes recognition and storing
 
-						// Check the method's attributes for input handler definitions
-						Delegate actionDelegate = null;
-						foreach (object attr in method.GetCustomAttributes (true))
-						{
-							Type attrType = attr.GetType ();
-							if (attrType == typeof(EventHandlerAttribute))
-							{ // Method is an eventHandler
-								if (EventHandlerAttribute.AssureValidity (method, attr as EventHandlerAttribute)) 
-								{ // Method signature is correct, so we register this handler
-									if (actionDelegate == null) actionDelegate = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo>), method);
-									eventHandlers.Add (new KeyValuePair<EventHandlerAttribute, Delegate> (attr as EventHandlerAttribute, actionDelegate));
-								}
-							}
-							else if (attrType == typeof(HotkeyAttribute))
-							{ // Method is an hotkeyHandler
-								if (HotkeyAttribute.AssureValidity (method, attr as HotkeyAttribute)) 
-								{ // Method signature is correct, so we register this handler
-									if (actionDelegate == null) actionDelegate = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo>), method);
-									hotkeyHandlers.Add (new KeyValuePair<HotkeyAttribute, Delegate> (attr as HotkeyAttribute, actionDelegate));
-								}
-							}
-							else if (attrType == typeof(ContextEntryAttribute))
-							{ // Method is an contextEntry
-								if (ContextEntryAttribute.AssureValidity (method, attr as ContextEntryAttribute)) 
-								{ // Method signature is correct, so we register this handler
-									if (actionDelegate == null) actionDelegate = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo>), method);
-									// Create a proper MenuFunction as a wrapper for the delegate that converts the object to NodeEditorInputInfo
-									MenuFunctionData menuFunction = (object callbackObj) => 
-									{
-										if (!(callbackObj is NodeEditorInputInfo))
-											throw new UnityException ("Callback Object passed by context is not of type NodeEditorMenuCallback!");
-										actionDelegate.DynamicInvoke (callbackObj as NodeEditorInputInfo);
-									};
-									contextEntries.Add (new KeyValuePair<ContextEntryAttribute, MenuFunctionData> (attr as ContextEntryAttribute, menuFunction));
-								}
-							}
-							else if (attrType == typeof(ContextFillerAttribute))
-							{ // Method is an contextFiller
-								if (ContextFillerAttribute.AssureValidity (method, attr as ContextFillerAttribute)) 
-								{ // Method signature is correct, so we register this handler
-									Delegate methodDel = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo, GenericMenu>), method);
-									contextFillers.Add (new KeyValuePair<ContextFillerAttribute, Delegate> (attr as ContextFillerAttribute, methodDel));
-								}
+					// Check the method's attributes for input handler definitions
+					Delegate actionDelegate = null;
+					foreach (object attr in method.GetCustomAttributes (true))
+					{
+						Type attrType = attr.GetType ();
+						if (attrType == typeof(EventHandlerAttribute))
+						{ // Method is an eventHandler
+							if (EventHandlerAttribute.AssureValidity (method, attr as EventHandlerAttribute)) 
+							{ // Method signature is correct, so we register this handler
+								if (actionDelegate == null) actionDelegate = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo>), method);
+								eventHandlers.Add (new KeyValuePair<EventHandlerAttribute, Delegate> (attr as EventHandlerAttribute, actionDelegate));
 							}
 						}
-
-						#endregion
+						else if (attrType == typeof(HotkeyAttribute))
+						{ // Method is an hotkeyHandler
+							if (HotkeyAttribute.AssureValidity (method, attr as HotkeyAttribute)) 
+							{ // Method signature is correct, so we register this handler
+								if (actionDelegate == null) actionDelegate = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo>), method);
+								hotkeyHandlers.Add (new KeyValuePair<HotkeyAttribute, Delegate> (attr as HotkeyAttribute, actionDelegate));
+							}
+						}
+						else if (attrType == typeof(ContextEntryAttribute))
+						{ // Method is an contextEntry
+							if (ContextEntryAttribute.AssureValidity (method, attr as ContextEntryAttribute)) 
+							{ // Method signature is correct, so we register this handler
+								if (actionDelegate == null) actionDelegate = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo>), method);
+								// Create a proper MenuFunction as a wrapper for the delegate that converts the object to NodeEditorInputInfo
+								MenuFunctionData menuFunction = (object callbackObj) => 
+								{
+									if (!(callbackObj is NodeEditorInputInfo))
+										throw new UnityException ("Callback Object passed by context is not of type NodeEditorMenuCallback!");
+									actionDelegate.DynamicInvoke (callbackObj as NodeEditorInputInfo);
+								};
+								contextEntries.Add (new KeyValuePair<ContextEntryAttribute, MenuFunctionData> (attr as ContextEntryAttribute, menuFunction));
+							}
+						}
+						else if (attrType == typeof(ContextFillerAttribute))
+						{ // Method is an contextFiller
+							if (ContextFillerAttribute.AssureValidity (method, attr as ContextFillerAttribute)) 
+							{ // Method signature is correct, so we register this handler
+								Delegate methodDel = Delegate.CreateDelegate (typeof(Action<NodeEditorInputInfo, GenericMenu>), method);
+								contextFillers.Add (new KeyValuePair<ContextFillerAttribute, Delegate> (attr as ContextFillerAttribute, methodDel));
+							}
+						}
 					}
+
+					#endregion
 				}
 			}
 
