@@ -149,7 +149,7 @@ namespace NodeEditorFramework
 		}
 
 		[EventHandlerAttribute (EventType.MouseDown)]
-		[EventHandlerAttribute (EventType.MouseUp)]
+		[EventHandlerAttribute (EventType.MouseUp,-1)]
 		private static void HandleNodeDraggingEnd (NodeEditorInputInfo inputInfo) 
 		{
 			if (inputInfo.editorState.dragUserID == "node")
