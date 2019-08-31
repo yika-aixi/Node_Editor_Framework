@@ -219,6 +219,36 @@ namespace NodeEditorFramework
 
 		#endregion
 
+		#region 选择框
+
+		[EventHandlerAttribute (EventType.MouseDown, 106)] // Priority over hundred to make it call after the GUI
+		private static void HandleSelectBoxStart (NodeEditorInputInfo inputInfo) 
+		{
+			if (GUIUtility.hotControl > 0)
+				return; // GUI has control
+
+			NodeEditorState state = inputInfo.editorState;
+			
+			state.MouseDownPos = inputInfo.inputPos;
+			
+			if (!state.focusedNode)
+			{
+				if (inputInfo.inputEvent.button == 0)
+				{
+					state.IsDrawSelectSelectBox = true;
+				}
+			}
+		}
+
+		[EventHandlerAttribute (EventType.MouseUp)]
+		private static void HandleSelectBoxEnd (NodeEditorInputInfo inputInfo) 
+		{
+			inputInfo.editorState.IsDrawSelectSelectBox = false;
+			Event.current.Use();
+		}
+
+		#endregion
+
 		#region Connection
 
 		[EventHandlerAttribute (EventType.MouseDown)]
