@@ -187,7 +187,7 @@ namespace NodeEditorFramework
 				return; // GUI has control
 
 			NodeEditorState state = inputInfo.editorState;
-			if ((inputInfo.inputEvent.button == 0 || inputInfo.inputEvent.button == 2) && state.focusedNode == null) 
+			if (inputInfo.inputEvent.button == 2 && state.focusedNode == null) 
 			{ // Left- or Middle clicked on the empty canvas -> Start panning
 				state.panWindow = true;
 				state.StartDrag ("window", inputInfo.inputPos, state.panOffset);
