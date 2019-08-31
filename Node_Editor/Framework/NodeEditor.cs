@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 using NodeEditorFramework.Utilities;
 using NodeEditorFramework.IO;
-
+using UnityEditor;
 using Object = UnityEngine.Object;
 
 namespace NodeEditorFramework
@@ -162,6 +162,34 @@ namespace NodeEditorFramework
 		
 		#region GUI
 
+		#region Select Box
+		
+		/// <summary>
+		/// 绘制选择框
+		/// </summary>
+		/// <param name="editorState"></param>
+		public static void DrawSelectBox(NodeEditorState editorState)
+		{
+			if (editorState.IsDrawSelectSelectBox)
+			{
+				Rect rect = new Rect(editorState.MouseDownPos.x, editorState.MouseDownPos.y, 
+					Event.current.mousePosition.x - editorState.MouseDownPos.x, Event.current.mousePosition.y - editorState.MouseDownPos.y);
+				
+#if UNITY_EDITOR
+				Handles.DrawSolidRectangleWithOutline(rect, new Color(0, 0, 0, 0.1f), new Color(1, 1, 1, 0.6f));			
+#else
+				GUI.Box(rect,"");
+#endif
+
+				if (Event.current.isMouse)
+				{
+					Event.current.Use();
+				}
+			}
+		}
+
+		#endregion
+
 		/// <summary>
 		/// Draws the Node Canvas on the screen in the rect specified by editorState
 		/// </summary>
@@ -200,6 +228,9 @@ namespace NodeEditorFramework
 
 			// Handle input events
 			NodeEditorInputSystem.HandleInputEvents (curEditorState);
+
+			DrawSelectBox(curEditorState);
+			
 			if (Event.current.type != EventType.Layout)
 				curEditorState.ignoreInput = new List<Rect> ();
 
