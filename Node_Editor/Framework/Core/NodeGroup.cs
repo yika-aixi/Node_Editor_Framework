@@ -2,7 +2,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-
+using CabinIcarus.NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
 namespace NodeEditorFramework
@@ -94,6 +94,26 @@ namespace NodeEditorFramework
 				if (rect.Contains(node.rect.center))
 					pinnedNodes.Add(node);
 			}
+		}
+		
+		/// <summary>
+		/// 是否包含指定节点组
+		/// </summary>
+		/// <param name="group"></param>
+		/// <returns></returns>
+		public bool IsContainsNodeGroup(NodeGroup @group)
+		{
+			return pinnedGroups.Contains(group);
+		}
+
+		/// <summary>
+		/// 是否包含指定节点
+		/// </summary>
+		/// <param name="node"></param>
+		/// <returns></returns>
+		public bool IsContainsNode(Node node)
+		{
+			return pinnedNodes.Contains(node);
 		}
 
 		/// <summary>
