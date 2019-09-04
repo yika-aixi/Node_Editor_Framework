@@ -258,7 +258,7 @@ namespace NodeEditorFramework
 
 		#region Connection
 
-		[EventHandlerAttribute (EventType.MouseDown)]
+		[EventHandlerAttribute (EventType.MouseDown,-1)]
 		private static void HandleConnectionDrawing (NodeEditorInputInfo inputInfo) 
 		{ // TODO: Revamp Multi-Multi knob editing
 			NodeEditorState state = inputInfo.editorState;
