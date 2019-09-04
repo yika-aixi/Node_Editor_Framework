@@ -200,8 +200,8 @@ namespace NodeEditorFramework
 			if (OverlayGUI.HasPopupControl ())
 				return true;
 			// Check if mouse is outside of canvas rect
-			if (!state.canvasRect.Contains (Event.current.mousePosition))
-				return true;
+//			if (!state.canvasRect.Contains (Event.current.mousePosition))
+//				return true;
 			// Check if mouse is inside an ignoreInput rect
 			for (int ignoreCnt = 0; ignoreCnt < state.ignoreInput.Count; ignoreCnt++) 
 			{
