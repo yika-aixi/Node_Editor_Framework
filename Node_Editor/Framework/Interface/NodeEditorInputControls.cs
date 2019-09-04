@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections.Generic;
-
+using CabinIcarus.NodeEditorFramework;
 using NodeEditorFramework.Utilities;
 
 namespace NodeEditorFramework 
@@ -138,9 +138,19 @@ namespace NodeEditorFramework
 				{ // Apply new position for the dragged node
 					state.UpdateDrag ("node", inputInfo.inputPos);
 					if ((state.dragObjectPos - state.dragObjectStart).magnitude > 10)
+					{
+						//当前选择节点的移动量
+						var pos = state.dragObjectPos - state.selectedNode.position;
+							
 						state.selectedNode.position = state.dragObjectPos;
+
+						//更新选择框其他元素的坐标
+						SelectBox.UpdateSelectBoxElementPos(state,pos);
+					}
 					else
+					{
 						state.selectedNode.position = state.dragObjectStart;
+					}
 					NodeEditor.RepaintClients ();
 				} 
 				else
@@ -222,36 +232,6 @@ namespace NodeEditorFramework
 			if (inputInfo.editorState.dragUserID == "window")
 				inputInfo.editorState.panOffset = inputInfo.editorState.EndDrag ("window");
 			inputInfo.editorState.panWindow = false;
-		}
-
-		#endregion
-
-		#region 选择框
-
-		[EventHandlerAttribute (EventType.MouseDown, 106)] // Priority over hundred to make it call after the GUI
-		private static void HandleSelectBoxStart (NodeEditorInputInfo inputInfo) 
-		{
-			if (GUIUtility.hotControl > 0)
-				return; // GUI has control
-
-			NodeEditorState state = inputInfo.editorState;
-			
-			state.MouseDownPos = inputInfo.inputPos;
-			
-			if (!state.focusedNode)
-			{
-				if (inputInfo.inputEvent.button == 0)
-				{
-					state.IsDrawSelectSelectBox = true;
-				}
-			}
-		}
-
-		[EventHandlerAttribute (EventType.MouseUp)]
-		private static void HandleSelectBoxEnd (NodeEditorInputInfo inputInfo) 
-		{
-			inputInfo.editorState.IsDrawSelectSelectBox = false;
-			Event.current.Use();
 		}
 
 		#endregion

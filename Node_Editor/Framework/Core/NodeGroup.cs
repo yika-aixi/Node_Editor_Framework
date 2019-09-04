@@ -451,6 +451,7 @@ namespace NodeEditorFramework
 				}
 				// Update drag operation
 				Vector2 dragChange = state.UpdateDrag ("group", inputInfo.inputPos);
+				SelectBox.UpdateSelectBoxElementPos(state,dragChange);
 				Vector2 newSizePos = state.dragObjectPos;
 				if (state.resizeGroup)
 				{ // Resizing -> Apply drag to selected borders while keeping a minimum size

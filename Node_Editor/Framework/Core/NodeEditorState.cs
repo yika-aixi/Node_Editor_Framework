@@ -32,9 +32,18 @@ namespace NodeEditorFramework
 		/// 鼠标点下时的坐标 
 		public Vector2 MouseDownPos { get; set; }
 
+		#region 选择框
+
 		/// 绘制选择框 
 		public bool IsDrawSelectSelectBox { get; set; }
 		
+		/// 选择框包含的节点 
+		public List<Node> BoxContainNodes = new List<Node>();
+
+		/// 选择框包含的组 
+		public List<NodeGroup> BoxContainGroup = new List<NodeGroup>();
+		
+		#endregion
 		// Temporary variables
 		public Vector2 zoomPos { get { return canvasRect.size/2; } } // zoom center in canvas space
 		public Rect canvasViewport { get { return new Rect(-panOffset - zoomPos * zoom, canvasRect.size * zoom); } } // canvas viewport in canvas space (same as nodes)
