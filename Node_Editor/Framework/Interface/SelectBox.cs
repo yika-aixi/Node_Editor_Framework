@@ -233,7 +233,7 @@ namespace CabinIcarus.NodeEditorFramework
         /// 鼠标离开窗口
         /// </summary>
         /// <param name="inputInfo"></param>
-        [EventHandlerAttribute (EventType.Ignore)]
+        [EventHandlerAttribute (EventType.Ignore,-1)]
         private static void HandleSelectBoxEndIgnore (NodeEditorInputInfo inputInfo) 
         {
             if (inputInfo.inputEvent.rawType == EventType.MouseUp)
