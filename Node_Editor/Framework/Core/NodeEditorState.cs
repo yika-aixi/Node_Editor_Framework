@@ -43,6 +43,8 @@ namespace NodeEditorFramework
 		/// 选择框包含的组 
 		public List<NodeGroup> BoxContainGroup = new List<NodeGroup>();
 		
+		/// 选择框包含的连接线
+		public List<ConnectionKnob> BoxContainConnectionKnob = new List<ConnectionKnob>();
 		#endregion
 		// Temporary variables
 		public Vector2 zoomPos { get { return canvasRect.size/2; } } // zoom center in canvas space

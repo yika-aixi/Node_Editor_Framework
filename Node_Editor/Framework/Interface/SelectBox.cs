@@ -67,6 +67,7 @@ namespace CabinIcarus.NodeEditorFramework
 				
 				_selectNode(editorState, rect);
 				
+				_selectConnectionKnob(editorState, rect);
 				#endregion
 			}
 		}
@@ -110,6 +111,31 @@ namespace CabinIcarus.NodeEditorFramework
 			        if (!editorState.BoxContainNodes.Contains(node))
 			        {
 				        editorState.BoxContainNodes.Add(node);
+			        }
+		        }
+	        }
+        }
+        
+        private static void _selectConnectionKnob(NodeEditorState editorState, Rect rect)
+        {
+	        foreach (var node in editorState.canvas.nodes)
+	        {
+		        if (_isClipped(editorState, node.fullAABBRect))
+		        {
+			        //跳过
+			        continue;
+		        }
+		        
+		        foreach (var knob in node.connectionKnobs)
+		        {
+			        var pos = _getSceneRect(editorState, knob.GetCanvasSpaceKnob());
+			        
+			        if (rect.Overlaps(pos))
+			        {
+				        if (!editorState.BoxContainConnectionKnob.Contains(knob))
+				        {
+					        editorState.BoxContainConnectionKnob.Add(knob);
+				        }
 			        }
 		        }
 	        }
@@ -284,6 +310,7 @@ namespace CabinIcarus.NodeEditorFramework
         {
             state.BoxContainGroup.Clear();
             state.BoxContainNodes.Clear();
+            state.BoxContainConnectionKnob.Clear();
         }
     }
 }
