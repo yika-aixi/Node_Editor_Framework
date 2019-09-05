@@ -27,7 +27,6 @@ namespace CabinIcarus.NodeEditorFramework
 				
 				Rect rect = new Rect(editorState.MouseDownPos.x, editorState.MouseDownPos.y, 
 					Event.current.mousePosition.x - editorState.MouseDownPos.x, Event.current.mousePosition.y - editorState.MouseDownPos.y);
-				
 #if UNITY_EDITOR
 				if (!Application.isPlaying)
 				{
@@ -45,7 +44,6 @@ namespace CabinIcarus.NodeEditorFramework
 #else
 				GUI.Box(rect,"");
 #endif
-
 				#region Node Contains
 
 				// 如果是从右到左的选择框则重新设置一下坐标起点和大小
@@ -230,6 +228,7 @@ namespace CabinIcarus.NodeEditorFramework
 		        inputInfo.inputEvent.Use();
 	        }	        
         }
+        
         /// <summary>
         /// 鼠标离开窗口
         /// </summary>
