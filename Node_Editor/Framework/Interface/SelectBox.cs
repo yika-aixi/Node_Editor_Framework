@@ -243,6 +243,38 @@ namespace CabinIcarus.NodeEditorFramework
             }
         }
 
+        [HotkeyAttribute (KeyCode.Delete, EventType.KeyUp,-1)]
+        private static void HandleDeleteSelectBoxKnob (NodeEditorInputInfo inputInfo) 
+        {
+	        if (GUIUtility.keyboardControl > 0)
+		        return;
+
+	        if (inputInfo.editorState.BoxContainConnectionKnob.Count > 0)
+	        {
+#if UNITY_EDITOR
+		        UndoPro.UndoProManager.BeginRecordStack();
+#endif
+		        foreach (var @group in inputInfo.editorState.BoxContainGroup)
+		        {
+			        group.Delete();
+		        }
+		        
+		        foreach (var node in inputInfo.editorState.BoxContainNodes)
+		        {
+			        node.Delete();
+		        }
+		        
+		        foreach (var knob in inputInfo.editorState.BoxContainConnectionKnob)
+		        {
+				    knob.ClearConnections();
+		        }
+#if UNITY_EDITOR
+		        UndoPro.UndoProManager.EndRecordStack();
+#endif
+		        inputInfo.inputEvent.Use();
+	        }
+        }
+        
         #endregion
         
         /// <summary>
