@@ -219,6 +219,18 @@ namespace CabinIcarus.NodeEditorFramework
         }
 		
         /// <summary>
+        /// 鼠标拖动
+        /// </summary>
+        /// <param name="inputInfo"></param>
+        [EventHandlerAttribute (EventType.MouseDrag,106)]
+        private static void HandleSelectBoxMouseDrag (NodeEditorInputInfo inputInfo) 
+        {
+	        if (inputInfo.editorState.IsDrawSelectSelectBox)
+	        {
+		        inputInfo.inputEvent.Use();
+	        }	        
+        }
+        /// <summary>
         /// 鼠标离开窗口
         /// </summary>
         /// <param name="inputInfo"></param>
