@@ -158,7 +158,7 @@ namespace NodeEditorFramework
 			}
 		}
 
-		[EventHandlerAttribute (EventType.MouseDown)]
+		[EventHandlerAttribute (EventType.MouseDown,-1)]
 		[EventHandlerAttribute (EventType.MouseUp,-1)]
 		private static void HandleNodeDraggingEnd (NodeEditorInputInfo inputInfo) 
 		{
@@ -266,7 +266,7 @@ namespace NodeEditorFramework
 			}
 		}
 
-		[EventHandlerAttribute (EventType.MouseUp)]
+		[EventHandlerAttribute (EventType.MouseUp,-1)]
 		private static void HandleApplyConnection (NodeEditorInputInfo inputInfo) 
 		{
 			NodeEditorState state = inputInfo.editorState;
