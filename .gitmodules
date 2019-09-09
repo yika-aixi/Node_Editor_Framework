@@ -1,3 +1,4 @@
 [submodule "UndoPro"]
 	path = UndoPro
 	url = https://github.com/yika-aixi/UndoPro
+	branch = Cabin_Icarus
